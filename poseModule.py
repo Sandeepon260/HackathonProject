@@ -19,20 +19,14 @@ class poseDetector:
         detCon=0.5,
         trackCon=0.5,
     ):
-        self.mode = mode
-        self.upper = upper
-        self.smooth = smooth
-        self.complexity = complexity
-        self.detCon = detCon
-        self.trackCon = trackCon
         self.mpPose = mp.solutions.pose
         self.pose = self.mpPose.Pose(
-            self.mode,
-            self.upper,
-            self.complexity,
-            self.smooth,
-            self.detCon,
-            self.trackCon,
+            mode,
+            upper,
+            complexity,
+            smooth,
+            detCon,
+            trackCon,
         )
         self.mpDraw = mp.solutions.drawing_utils
 
@@ -52,7 +46,7 @@ class poseDetector:
             for id, lm in enumerate(self.results.pose_landmarks.landmark):
                 height, width, c = img.shape
                 cx, cy = int(width * lm.x), int(height * lm.y)
-                self.lmlist.append([id, cx, cy, int(lm.z * 1000)])
+                self.lmlist.append([id, cx, cy])
                 if draw:
                     cv2.circle(img, (cx, cy), 10, (255, 0, 0), cv2.FILLED)
         return self.lmlist, img
@@ -87,7 +81,13 @@ class poseDetector:
             )
         return angle, img
 
-
+def angle_from_horizontal(self, lm1, lm2) -> float:
+    x1, y1 = self.lmlist[lm1][1:]
+    x2, y2 = self.lmlist[lm2][1:]
+    return math.degrees(
+            math.atan2(y2 - y1, x2 - x1))
+    
+        
 def main():
 
     cap = cv2.VideoCapture(0)
