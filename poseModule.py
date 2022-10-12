@@ -81,13 +81,13 @@ class poseDetector:
             )
         return angle, img
 
-def angle_from_horizontal(self, lm1, lm2) -> float:
-    x1, y1 = self.lmlist[lm1][1:]
-    x2, y2 = self.lmlist[lm2][1:]
-    return math.degrees(
-            math.atan2(y2 - y1, x2 - x1))
-    
-        
+    def angle_from_horizontal(self, lm1, lm2) -> float:
+        x1, y1 = self.lmlist[lm1][1:]
+        x2, y2 = self.lmlist[lm2][1:]
+        angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+        return (180 - angle) % 90
+
+
 def main():
 
     cap = cv2.VideoCapture(0)
